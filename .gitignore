@@ -1,57 +1,114 @@
-lib-cov
-*.seed
+# Dependencies
+node_modules/
+bower_components/
+.pnpm-store/
+
+# Build outputs
+dist/
+out/
+out/*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Logs
 *.log
+logs/
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Runtime data
 *.csv
 *.dat
 *.out
-*.pid
 *.gz
 *.swp
 
-pids
-logs
-results
-tmp
-
 # Coverage reports
-coverage
+coverage/
+*.coverage
+.nyc_output
 
-# API keys and secrets
+# Environment variables
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Dependency directory
-node_modules
-bower_components
-.pnpm-store
+# Package manager lockfiles (keep pnpm-lock.yaml)
+# yarn.lock
+# package-lock.json
 
-# Editors
-.idea
+# Editor directories and files
+.idea/
 *.iml
+.vscode/settings.json
+*.sublime-project
+*.sublime-workspace
 
 # OS metadata
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+desktop.ini
 
-# Ignore built ts files
-dist/
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
 
-__pycache__/
-
-/.yalc
+# Yalc
+.yalc/
 yalc.lock
 
-.vscode/settings.json
-
-# Ignore output folder
-
-backend/out
-
-# Make sure to ignore any instance of the loader's decky_plugin.py
+# Decky Loader specific
 decky_plugin.py
-
-# Ignore decky CLI for building plugins
-out
-out/*
 cli/
 cli/*
 cli/decky
+
+# Development and deployment artifacts
+games-wiki-deploy/
+*.md
+!README.md
+!LICENSE.md
+*.sh
+*.bat
+*.txt
+!pnpm-lock.yaml
+
+# Plugin specific
+py_modules/
+decky.pyi
+
+# Allow screenshots for documentation
+!screenshots/
+!screenshots/*

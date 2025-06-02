@@ -1,7 +1,7 @@
 {
-  "name": "decky-plugin-template",
-  "version": "0.0.1",
-  "description": "A template to quickly create decky plugins from scratch, based on TypeScript and webpack",
+  "name": "games-wiki",
+  "version": "0.1.0",
+  "description": "A Decky plugin that provides quick links to wikis for installed games and allows searching game wikis",
   "type": "module",
   "scripts": {
     "build": "rollup -c",
@@ -15,11 +15,14 @@
   "keywords": [
     "decky",
     "plugin",
-    "plugin-template",
     "steam-deck",
-    "deck"
+    "deck",
+    "games",
+    "wiki",
+    "utility",
+    "search"
   ],
-  "author": "You <you@you.tld>",
+  "author": "krish",
   "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/SteamDeckHomebrew/decky-plugin-template/issues"
