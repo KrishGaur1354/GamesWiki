@@ -42,6 +42,9 @@ function GamesWikiContent() {
   const [error, setError] = useState<string>("");
   const [pluginEnabled, setPluginEnabled] = useState<boolean>(true);
   const [defaultWikiSite, setDefaultWikiSite] = useState<string>("pcgamingwiki");
+  
+  // Force re-render when wiki site changes
+  const [updateKey, setUpdateKey] = useState<number>(0);
 
   // Load games when component mounts
   useEffect(() => {
@@ -53,6 +56,8 @@ function GamesWikiContent() {
   // Debug the wiki site changes
   useEffect(() => {
     console.log("GamesWiki: Default wiki site changed to:", defaultWikiSite);
+    console.log("GamesWiki: Current wiki options:", wikiSites);
+    console.log("GamesWiki: Selected option matches:", wikiSites.find(site => site.data === defaultWikiSite));
   }, [defaultWikiSite]);
 
   const loadGames = async () => {
@@ -99,11 +104,20 @@ function GamesWikiContent() {
     }
   };
 
-  const openWikiLink = (gameName: string, wikiType: string = defaultWikiSite) => {
-    const url = getWikiUrl(gameName, wikiType);
-    const siteName = wikiSites.find(site => site.data === wikiType)?.label || wikiType;
+  const openWikiLink = (gameName: string, wikiType?: string) => {
+    // Use current state or passed wikiType
+    const actualWikiType = wikiType || defaultWikiSite;
+    const url = getWikiUrl(gameName, actualWikiType);
+    const siteName = wikiSites.find(site => site.data === actualWikiType)?.label || actualWikiType;
     
-    console.log("GamesWiki: Opening wiki link", { gameName, wikiType, url, siteName });
+    console.log("GamesWiki: Opening wiki link", { 
+      gameName, 
+      requestedWikiType: wikiType,
+      actualWikiType, 
+      currentDefault: defaultWikiSite,
+      url, 
+      siteName 
+    });
     
     try {
       window.open(url, '_blank');
@@ -135,8 +149,14 @@ function GamesWikiContent() {
 
   const handleWikiSiteChange = (option: SingleDropdownOption) => {
     console.log("GamesWiki: Wiki site changing from", defaultWikiSite, "to", option.data);
+    console.log("GamesWiki: Change option object:", option);
+    
     const newSite = option.data as string;
+    
+    // Update state
     setDefaultWikiSite(newSite);
+    // Force component update
+    setUpdateKey(prev => prev + 1);
     
     // Show confirmation toast
     const siteName = wikiSites.find(site => site.data === newSite)?.label || newSite;
@@ -144,6 +164,8 @@ function GamesWikiContent() {
       title: "Wiki Site Changed",
       body: `Default wiki site set to ${siteName}`
     });
+    
+    console.log("GamesWiki: State updated to:", newSite);
   };
 
   // Get current wiki site info for display
@@ -174,7 +196,7 @@ function GamesWikiContent() {
       padding: "6px",
       maxHeight: "70vh",
       overflowY: "auto"
-    }}>
+    }} key={updateKey}>
       {/* Plugin Toggle */}
       <PanelSection>
         <PanelSectionRow>
@@ -191,9 +213,12 @@ function GamesWikiContent() {
       {/* Default Wiki Site Selection */}
       <PanelSection title="Settings">
         <PanelSectionRow>
+          <div style={{ marginBottom: "4px", fontSize: "12px", color: "#dcdedf" }}>
+            Current default: {currentWikiLabel}
+          </div>
           <DropdownItem
             label="Default Wiki Site"
-            description={`Currently: ${currentWikiLabel}`}
+            description="Choose your preferred wiki site"
             rgOptions={wikiSites}
             selectedOption={defaultWikiSite}
             onChange={handleWikiSiteChange}
@@ -270,7 +295,10 @@ function GamesWikiContent() {
                   </div>
                   <ButtonItem
                     layout="below"
-                    onClick={() => openWikiLink(game.name, defaultWikiSite)}
+                    onClick={() => {
+                      console.log("GamesWiki: Button clicked, using wiki site:", defaultWikiSite);
+                      openWikiLink(game.name, defaultWikiSite);
+                    }}
                   >
                     Open in {currentWikiLabel}
                   </ButtonItem>
